@@ -1,0 +1,6 @@
+Download python3
+Open terminal in DownloadImages and run these commands:
+
+pip install -r requirements.txt
+playwright install
+python3 downloadImages.py
