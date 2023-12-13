@@ -1,6 +1,12 @@
 Download python3
+Replace the current files.csv with your csv file. Make sure the column name is AdobeId and the cell values are the ids.
 Open terminal in DownloadImages and run these commands:
 
 pip install -r requirements.txt
 playwright install
+mkdir Output
 python3 downloadImages.py
+
+
+After this a chromium window should open. Click the login button on adobe's website and login. After that go back to the terminal and click enter in it.
+Now the script should run and download all images.
