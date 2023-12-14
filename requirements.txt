@@ -1,3 +1,4 @@
-requests
+requests==2.31.1
 playwright==1.14.0
-pandas
+pandas=2.1.4
+asyncio==3.4.3
