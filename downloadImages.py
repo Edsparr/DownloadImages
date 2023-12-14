@@ -7,7 +7,10 @@ import asyncio as aio
 
 class Prompt:
     def __init__(self, loop=None):
-        self.loop = loop or aio.get_event_loop()
+        self.loop = aio.ProactorEventLoop()
+
+        aio.set_event_loop(loop)
+
         self.q = aio.Queue()
         self.loop.add_reader(sys.stdin, self.got_input)
 
