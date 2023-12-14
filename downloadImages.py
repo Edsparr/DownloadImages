@@ -16,7 +16,7 @@ download_preview_btn_selector = '#details > div > div > div.row-flex-detailspane
 async def main():
     # wait for user to press enter
     async with async_playwright() as p:
-        browser = await p.chromium.launch_persistent_context(headless=False, user_data_dir='./playwrightData')
+        browser = await p.chromium.launch_persistent_context(headless=False, user_data_dir='./playwrightData', accept_downloads=True)
         page = await browser.new_page()
 
         await page.goto('https://stock.adobe.com/se/')
@@ -34,6 +34,7 @@ async def main():
                 await workingPage.goto('https://stock.adobe.com/se/')
                 await workingPage.locator(search_field_selector).fill(asset_id)
                 await workingPage.keyboard.press('Enter')
+                await aio.sleep(3)
 
                 async with workingPage.expect_download() as download_info:
 
@@ -41,11 +42,13 @@ async def main():
                         download_free_btn = workingPage.locator(fetch_again_free_selector)
                         await download_free_btn.click()
                     except:
+                        print('Not licensed')
                         download_preview_btn = workingPage.locator(download_preview_btn_selector)
                         await download_preview_btn.click()
                 
                     download = await download_info.value
                     await download.save_as(f'Output/{asset_id}_{download.suggested_filename}')
+                    await aio.sleep(3)
 
             except Exception as ex: 
                 print(f'Failed to download asset id: {asset_id}')
