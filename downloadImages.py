@@ -67,6 +67,12 @@ async def main():
         print('Completed!')        
         await browser.close()
 
-loop = aio.get_event_loop()
-loop.run_until_complete(main())
-loop.close()
+aio.run(main())
+
+
+#loop = aio.ProactorEventLoop()
+#aio.set_event_loop(loop)
+
+#loop = aio.get_event_loop()
+#loop.run_until_complete(main())
+#loop.close()
