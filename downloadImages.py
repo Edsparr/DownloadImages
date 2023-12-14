@@ -1,9 +1,10 @@
 import requests
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 import pandas as pd
 import sys
 import asyncio as aio
 from aioconsole import ainput
+import os
 
 
 
@@ -26,30 +27,37 @@ async def main():
         
         for index, row in files_data.iterrows():
             workingPage = await browser.new_page()
+            asset_id = str(row['AdobeId'])
+            completed = row['Completed']
 
             try:
-                asset_id = str(row['AdobeId'])
+                if(completed == True):
+                    continue
                 print(f'Iterating on asset id: {asset_id}')
 
                 await workingPage.goto('https://stock.adobe.com/se/')
+                
                 await workingPage.locator(search_field_selector).fill(asset_id)
                 await workingPage.keyboard.press('Enter')
-                await aio.sleep(3)
 
                 async with workingPage.expect_download() as download_info:
-
                     try: 
                         download_free_btn = workingPage.locator(fetch_again_free_selector)
                         await download_free_btn.click()
-                    except:
+                    except PlaywrightTimeoutError as timeoutEx:
+                        raise timeoutEx
+                    except Exception as ex:
                         print('Not licensed')
                         download_preview_btn = workingPage.locator(download_preview_btn_selector)
                         await download_preview_btn.click()
                 
                     download = await download_info.value
-                    await download.save_as(f'Output/{asset_id}_{download.suggested_filename}')
-                    await aio.sleep(3)
 
+                    file_extension = os.path.splitext(download.suggested_filename)[1]
+
+                    await download.save_as(f'Output/{asset_id}{file_extension}')
+                    files_data.loc[index, ['Completed']] = True
+                    files_data.to_csv('files.csv')
             except Exception as ex: 
                 print(f'Failed to download asset id: {asset_id}')
                 print(ex)
