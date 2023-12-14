@@ -2,3 +2,4 @@ requests==2.31.0
 playwright==1.14.0
 pandas==2.1.4
 asyncio==3.4.3
+aioconsole==0.7.0
