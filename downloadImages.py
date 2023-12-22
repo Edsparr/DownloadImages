@@ -8,8 +8,7 @@ import os
 import re
 
 
-
-search_field_selector = '#app > div > div > div > main > div:nth-child(1) > section > div.sc-kpOJdX.sc-cMljjf.hMnIkE > div.sc-csuQGl.gWwqJj > div.sc-gqPbQI.eNLHdY.is-floating > div.sc-hORach.sc-iujRgT.dfHtsV > div > div > input'
+search_field_selector = 'input[type="search"]'
 fetch_again_free_selector = '#details > div > div > div.row-flex-detailspanel > div.padding-actionpanel > div > div > div > div > div.container-block.padding-top-medium.row > div > div.detail-button-group > button'
 download_preview_btn_selector = '#details > div > div > div.row-flex-detailspanel > div.padding-actionpanel > div > div > div > div > div.clear-fix.container--focus > div > div > span:nth-child(2) > div > button'
 
@@ -36,7 +35,7 @@ async def main():
                 print(f'Iterating on asset id: {asset_id}')
 
                 await workingPage.goto('https://stock.adobe.com/se/')
-                
+                await aio.sleep(1)
                 await workingPage.locator(search_field_selector).fill(asset_id)
                 await workingPage.keyboard.press('Enter')
 
@@ -59,12 +58,12 @@ async def main():
                     await download.save_as(f'./Output/{filename}')
                     files_data.loc[index, ['Completed']] = True
                     files_data.to_csv('files.csv')
-            except Exception as ex: 
+            except Exception as ex:
                 print(f'Failed to download asset id: {asset_id}')
                 print(ex)
             finally:
                 await workingPage.close()
-        print('Completed!')        
+        print('Completed!') #190700247
         await browser.close()
 
 aio.run(main())
