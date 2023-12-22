@@ -55,7 +55,7 @@ async def main():
 
                     file_extension = os.path.splitext(download.suggested_filename)[1]
 
-                    await download.save_as(f'Output/{asset_id}{file_extension}')
+                    await download.save_as(f'./Output/{asset_id}{file_extension}')
                     files_data.loc[index, ['Completed']] = True
                     files_data.to_csv('files.csv')
             except Exception as ex: 
