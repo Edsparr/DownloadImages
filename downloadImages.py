@@ -5,7 +5,7 @@ import sys
 import asyncio as aio
 from aioconsole import ainput
 import os
-
+import re
 
 
 
@@ -54,8 +54,9 @@ async def main():
                     download = await download_info.value
 
                     file_extension = os.path.splitext(download.suggested_filename)[1]
+                    filename = re.sub(r'[^\w_. -]', '_', f'{asset_id}{file_extension}')
 
-                    await download.save_as(f'./Output/{asset_id}{file_extension}')
+                    await download.save_as(f'./Output/{filename}')
                     files_data.loc[index, ['Completed']] = True
                     files_data.to_csv('files.csv')
             except Exception as ex: 
