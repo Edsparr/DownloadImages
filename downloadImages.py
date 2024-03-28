@@ -30,11 +30,10 @@ async def main():
             completed = row['Completed']
             try:
                 if(completed == True):
-                    continue
+                    continue 
                 print(f'Iterating on asset id: {asset_id}')
 
                 await workingPage.goto('https://stock.adobe.com/se/')
-                await aio.sleep(1)
                 await workingPage.locator(search_field_selector).fill(asset_id)
                 await workingPage.keyboard.press('Enter')
 
