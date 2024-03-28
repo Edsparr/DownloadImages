@@ -8,9 +8,9 @@ import os
 import re
 
 
-search_field_selector = 'input[type="search"]'
+search_field_selector = 'input[data-t="search-bar-search-term-input"]'
 fetch_again_free_selector = '#details > div > div > div.row-flex-detailspanel > div.padding-actionpanel > div > div > div > div > div.container-block.padding-top-medium.row > div > div.detail-button-group > button'
-download_preview_btn_selector = '#details > div > div > div.row-flex-detailspanel > div.padding-actionpanel > div > div > div > div > div.clear-fix.container--focus > div > div > span:nth-child(2) > div > button'
+download_preview_btn_selector = '#details > div > div > div.row-flex-detailspanel > div.flex-same-length > div.padding-left-large.padding-right-large > div > div.clear-fix.container--focus > div > div > span:nth-child(2) > div > button'
 
 
 async def main():
@@ -26,12 +26,11 @@ async def main():
         
         for index, row in files_data.iterrows():
             workingPage = await browser.new_page()
-            asset_id = str(row['AdobeId'])
+            asset_id = str(int(row['AdobeId']))
             completed = row['Completed']
-
             try:
-                if(completed == True):
-                    continue
+                #if(completed == True):
+                #    continue
                 print(f'Iterating on asset id: {asset_id}')
 
                 await workingPage.goto('https://stock.adobe.com/se/')
