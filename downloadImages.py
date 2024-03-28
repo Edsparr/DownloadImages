@@ -29,8 +29,8 @@ async def main():
             asset_id = str(int(row['AdobeId']))
             completed = row['Completed']
             try:
-                #if(completed == True):
-                #    continue
+                if(completed == True):
+                    continue
                 print(f'Iterating on asset id: {asset_id}')
 
                 await workingPage.goto('https://stock.adobe.com/se/')
